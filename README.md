@@ -32,9 +32,16 @@ Na primeira abertura são criados quatro relatos marcados como **Dados simulados
 1. Em **Início**, apresente o ODS 14, a meta 14.1 e a equipe. Explique como os relatos ajudam voluntários a localizar trechos para um mutirão.
 2. Abra **Registrar ocorrência**. Tente salvar o formulário vazio para mostrar as mensagens de validação.
 3. Selecione **Cabo Branco** e **Plástico**, informe **Acesso à areia perto da ciclovia** e, se desejar, descreva o resíduo. Salve e mostre a confirmação e o status **Registrada**.
-4. Em **Ocorrências**, combine os filtros **Cabo Branco** e **Plástico**. Mostre também a busca por trecho. Use **Limpar filtros** para voltar à lista e apontar os quatro relatos com o selo **Dados simulados**.
+4. Em **Ocorrências**, abra **Filtros** no celular e selecione **Cabo Branco** e **Plástico**. Mostre também a busca por trecho. Use **Limpar filtros** para voltar à lista e apontar os quatro relatos com o selo **Dados simulados**.
 5. Clique em **Marcar como recolhida**. Explique que é uma atualização manual. Recarregue a página, aplique os mesmos filtros e confirme o status **Recolhida**.
 
+
+## Capturas de tela
+
+| Tela | Celular (390 px) | Desktop (1440 px) |
+| --- | --- | --- |
+| Início | [Ver no celular](capturas/inicio-celular.png) | [Ver no desktop](capturas/inicio-desktop.png) |
+| Ocorrências | [Ver no celular](capturas/ocorrencias-celular.png) | [Ver no desktop](capturas/ocorrencias-desktop.png) |
 
 ## Imagem de abertura
 

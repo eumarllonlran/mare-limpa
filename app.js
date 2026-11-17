@@ -3,6 +3,10 @@
 const storageKey = "mare-limpa.ocorrencias.v1";
 const registration = document.querySelector("#form-registro");
 const filters = document.querySelector("#filtros");
+const filterToggle = document.querySelector("#alternar-filtros");
+const filterOptions = document.querySelector("#opcoes-filtros");
+const filterLabel = document.querySelector("#rotulo-filtros");
+const narrowScreen = window.matchMedia("(max-width: 760px)");
 const reports = document.querySelector("#relatos");
 const template = document.querySelector("#modelo-relato");
 const empty = document.querySelector("#lista-vazia");
@@ -22,6 +26,7 @@ const fieldMessages = {
 };
 
 let activeView;
+let newReportId;
 
 function exampleReports() {
   const examples = [
@@ -68,6 +73,7 @@ function route() {
   if (next !== activeView) {
     feedback.textContent = "";
     storageError.textContent = "";
+    if (next.id !== "ocorrencias") newReportId = null;
   }
 
   views.forEach((view) => { view.hidden = view !== next; });
@@ -138,9 +144,11 @@ registration.addEventListener("submit", (event) => {
 
   registration.reset();
   filters.reset();
+  newReportId = report.id;
+  setFilterPanel(!narrowScreen.matches);
   history.pushState(null, "", "#ocorrencias");
   route();
-  feedback.textContent = "Ocorrência registrada com sucesso.";
+  feedback.textContent = `Ocorrência registrada com sucesso. ${report.trecho} · ${report.praia}.`;
 });
 
 function normalize(value) {
@@ -150,7 +158,10 @@ function normalize(value) {
 function createCard(item) {
   const card = template.content.firstElementChild.cloneNode(true);
   const collected = item.status === "Recolhida";
+  const isNew = item.id === newReportId;
   card.dataset.id = item.id;
+  card.classList.toggle("is-new", isNew);
+  card.querySelector(".report-new").hidden = !isNew;
   card.querySelector(".report-beach").textContent = item.praia;
   card.querySelector(".report-place").textContent = item.trecho;
 
@@ -186,6 +197,8 @@ function renderReports() {
   const category = values.get("categoria");
   const status = values.get("status");
   const place = normalize(values.get("trecho").trim());
+  const activeFilters = [beach, category, status].filter(Boolean).length;
+  filterLabel.textContent = activeFilters ? `Filtros (${activeFilters})` : "Filtros";
   const matches = items.filter((item) =>
     (!beach || item.praia === beach) &&
     (!category || item.categoria === category) &&
@@ -214,6 +227,22 @@ function applyFilters() {
   renderReports();
 }
 
+function setFilterPanel(expanded) {
+  filterOptions.hidden = !expanded;
+  filterToggle.setAttribute("aria-expanded", String(expanded));
+}
+
+function syncFilterLayout() {
+  const wasOnToggle = document.activeElement === filterToggle;
+  setFilterPanel(!narrowScreen.matches || filterOptions.contains(document.activeElement));
+  filterToggle.hidden = !narrowScreen.matches;
+  if (wasOnToggle && filterToggle.hidden) filterOptions.querySelector("select").focus();
+}
+
+narrowScreen.addEventListener("change", syncFilterLayout);
+syncFilterLayout();
+filterToggle.addEventListener("click", () => setFilterPanel(filterOptions.hidden));
+
 filters.addEventListener("input", applyFilters);
 filters.addEventListener("submit", (event) => event.preventDefault());
 document.querySelector("#limpar-filtros").addEventListener("click", () => {
@@ -227,18 +256,37 @@ reports.addEventListener("click", (event) => {
   const id = button.closest(".report").dataset.id;
   feedback.textContent = "";
   storageError.textContent = "";
+  let report;
   try {
     const current = readReports();
-    writeReports(current.map((item) => item.id === id ? { ...item, status: "Recolhida" } : item));
+    report = current.find((item) => item.id === id);
+    if (report) {
+      report.status = "Recolhida";
+      writeReports(current);
+    }
   } catch {
     showStorageError("Não foi possível atualizar o status. Verifique o armazenamento local e tente novamente.");
     return;
   }
 
+  if (newReportId === id) newReportId = null;
   renderReports();
+  feedback.textContent = report
+    ? `Ocorrência marcada como recolhida. ${report.trecho} · ${report.praia}.`
+    : "Esta ocorrência já não consta na lista.";
   const updated = [...reports.children].find((card) => card.dataset.id === id);
-  (updated?.querySelector(".report-place") ?? document.querySelector("#titulo-lista")).focus();
-  feedback.textContent = "Ocorrência marcada como recolhida.";
+  if (updated) {
+    const confirmation = document.createElement("span");
+    confirmation.className = "collect-confirmation";
+    confirmation.textContent = "Recolhimento confirmado";
+    confirmation.tabIndex = -1;
+    updated.querySelector(".collect").after(confirmation);
+    confirmation.focus({ preventScroll: true });
+    confirmation.scrollIntoView({ block: "nearest" });
+  } else {
+    feedback.focus({ preventScroll: true });
+    feedback.scrollIntoView({ block: "nearest" });
+  }
 });
 
 document.querySelector(".skip-link").addEventListener("click", (event) => {
@@ -251,11 +299,9 @@ window.addEventListener("storage", ({ key }) => {
   if ((key === storageKey || key === null) && activeView.id === "ocorrencias") renderReports();
 });
 
-document.querySelector("#trecho").setAttribute("aria-describedby", "ajuda-trecho");
 try {
   readReports();
 } catch {
   // A tela de ocorrências explica a indisponibilidade e exibe os exemplos.
 }
 route();
-

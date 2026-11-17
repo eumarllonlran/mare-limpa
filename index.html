@@ -3,13 +3,22 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f8f7f2">
+  <meta name="theme-color" content="#f4f7f8">
   <meta name="description" content="Registro de resíduos nas praias de Tambaú e Cabo Branco, em João Pessoa.">
   <title>Maré Limpa · ODS 14</title>
   <link rel="stylesheet" href="styles.css">
   <script src="app.js" defer></script>
 </head>
 <body>
+  <svg class="icon-defs" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M19 10c0 5-7 11-7 11S5 15 5 10a7 7 0 1 1 14 0Z"/><circle cx="12" cy="10" r="2.5"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15m-6-6 6 6-6 6"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></symbol>
+    <symbol id="i-filter" viewBox="0 0 24 24"><path d="M3 7h6m4 0h8M3 17h10m4 0h4"/><circle cx="11" cy="7" r="2"/><circle cx="15" cy="17" r="2"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m4 12 5 5L20 6"/></symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4m10-4v4M3 10h18"/></symbol>
+  </svg>
   <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
   <header class="site-header">
     <div class="shell header-inner">
@@ -28,18 +37,18 @@
   </header>
 
   <main id="conteudo" class="shell" tabindex="-1">
-    <p id="feedback" class="feedback" role="status" aria-atomic="true"></p>
+    <p id="feedback" class="feedback" role="status" aria-atomic="true" tabindex="-1"></p>
     <p id="erro-armazenamento" class="storage-error" role="alert"></p>
 
     <section id="inicio" class="view" aria-labelledby="titulo-inicio">
       <div class="hero">
         <div class="hero-content">
-          <p class="eyebrow hero-location">João Pessoa, PB</p>
-          <h1 id="titulo-inicio" tabindex="-1">Resíduos <em>na praia.</em></h1>
-          <p class="hero-lead">Registre resíduos em Tambaú e Cabo Branco para ajudar voluntários a definir os trechos de um próximo mutirão.</p>
+          <p class="eyebrow hero-location"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-pin"></use></svg> João Pessoa, PB</p>
+          <h1 id="titulo-inicio" tabindex="-1">Maré <em>Limpa</em></h1>
+          <p class="hero-lead">Registre resíduos nas praias de Tambaú e Cabo Branco e consulte os trechos que precisam de atenção no próximo mutirão.</p>
           <div class="actions hero-actions">
-            <a class="button button-primary" href="#registro">Registrar ocorrência <span class="button-icon" aria-hidden="true">+</span></a>
-            <a class="button button-text" href="#ocorrencias">Ver ocorrências <span class="button-icon" aria-hidden="true">↗</span></a>
+            <a class="button button-primary" href="#registro"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-plus"></use></svg> Registrar ocorrência</a>
+            <a class="button button-text" href="#ocorrencias">Ver ocorrências <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></a>
           </div>
         </div>
         <figure class="hero-picture">
@@ -75,7 +84,7 @@
         <p>Informe onde encontrou o resíduo e de que tipo ele é.</p>
       </div>
       <form id="form-registro" class="panel registration" novalidate>
-        <p class="form-note">Campos marcados com asterisco (*) são obrigatórios.</p>
+        <p class="form-note">Os campos com * são obrigatórios.</p>
         <div class="form-grid">
           <div class="field">
             <label for="praia">Praia <span aria-hidden="true">*</span></label>
@@ -95,8 +104,8 @@
           </div>
           <div class="field full">
             <label for="trecho">Trecho ou ponto de referência <span aria-hidden="true">*</span></label>
-            <input id="trecho" name="trecho" type="text" required maxlength="100" placeholder="Ex.: em frente ao letreiro de João Pessoa">
-            <p id="ajuda-trecho" class="hint">Até 100 caracteres.</p>
+            <input id="trecho" name="trecho" aria-describedby="ajuda-trecho" type="text" required maxlength="100" placeholder="Informe um ponto de referência">
+            <p id="ajuda-trecho" class="hint">Ex.: Acesso à areia perto da ciclovia. Até 100 caracteres.</p>
             <p class="field-error" id="erro-trecho" hidden></p>
           </div>
           <div class="field full">
@@ -106,7 +115,7 @@
         </div>
         <div class="form-footer">
           <p>A data é preenchida ao salvar. O status inicial é <strong>Registrada</strong>.</p>
-          <button class="button button-primary" type="submit">Salvar ocorrência <span class="button-icon" aria-hidden="true">→</span></button>
+          <button class="button button-primary" type="submit">Salvar ocorrência <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></button>
         </div>
       </form>
     </section>
@@ -117,35 +126,40 @@
           <h1 id="titulo-lista" tabindex="-1">Ocorrências</h1>
           <p>Consulte os relatos e encontre trechos que precisam de atenção.</p>
         </div>
-        <a class="button button-primary" href="#registro">Registrar ocorrência <span class="button-icon" aria-hidden="true">+</span></a>
+        <a class="button button-primary" href="#registro"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-plus"></use></svg> Registrar ocorrência</a>
       </div>
-      <form id="filtros" class="panel filters" aria-label="Filtrar ocorrências">
-        <div class="field">
-          <label for="filtro-praia">Praia</label>
-          <select id="filtro-praia" name="praia">
-            <option value="">Todas as praias</option><option>Tambaú</option><option>Cabo Branco</option>
-          </select>
-        </div>
-        <div class="field">
-          <label for="filtro-categoria">Categoria</label>
-          <select id="filtro-categoria" name="categoria">
-            <option value="">Todas</option>
-            <option>Plástico</option><option>Vidro</option><option>Metal</option><option>Papel</option><option>Outros</option>
-          </select>
-        </div>
-        <div class="field">
-          <label for="filtro-status">Status</label>
-          <select id="filtro-status" name="status">
-            <option value="">Todos</option><option>Registrada</option><option>Recolhida</option>
-          </select>
-        </div>
+      <form id="filtros" class="filters" aria-label="Filtrar ocorrências">
         <div class="field filter-search">
-          <label for="filtro-trecho">Trecho</label>
-          <input id="filtro-trecho" name="trecho" type="search" placeholder="Buscar trecho">
+          <label for="filtro-trecho">Buscar por trecho</label>
+          <div class="search-control"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-search"></use></svg><input id="filtro-trecho" name="trecho" type="search" placeholder="Ponto de referência"></div>
         </div>
-        <button class="button button-outline" type="button" id="limpar-filtros">Limpar filtros</button>
+        <button id="alternar-filtros" type="button" class="button button-outline" aria-controls="opcoes-filtros" aria-expanded="true" hidden><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-filter"></use></svg> <span id="rotulo-filtros">Filtros</span></button>
+        <div id="opcoes-filtros" class="filter-options">
+          <div class="field">
+            <label for="filtro-praia">Praia</label>
+            <select id="filtro-praia" name="praia">
+              <option value="">Todas as praias</option><option>Tambaú</option><option>Cabo Branco</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="filtro-categoria">Categoria</label>
+            <select id="filtro-categoria" name="categoria">
+              <option value="">Todas</option>
+              <option>Plástico</option><option>Vidro</option><option>Metal</option><option>Papel</option><option>Outros</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="filtro-status">Status</label>
+            <select id="filtro-status" name="status">
+              <option value="">Todos</option><option>Registrada</option><option>Recolhida</option>
+            </select>
+          </div>
+        </div>
       </form>
-      <p id="contagem" class="count" role="status" aria-atomic="true"></p>
+      <div class="results-bar">
+        <p id="contagem" class="count" role="status" aria-atomic="true"></p>
+        <button class="clear-filters" type="button" id="limpar-filtros">Limpar filtros</button>
+      </div>
       <ul id="relatos" class="reports" aria-label="Lista de ocorrências"></ul>
       <div id="lista-vazia" class="panel empty" hidden>
         <h2 id="titulo-vazio"></h2>
@@ -164,21 +178,22 @@
   <template id="modelo-relato">
     <li class="report">
       <article>
-        <div class="report-main">
-          <p class="report-beach"></p>
-          <h2 class="report-place" tabindex="-1"></h2>
-          <p class="report-description"></p>
+        <div class="report-top">
+          <p class="beach-line"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-pin"></use></svg> <span class="report-beach"></span></p>
+          <span class="badge report-status"></span>
         </div>
+        <h2 class="report-place" tabindex="-1"></h2>
+        <p class="report-description"></p>
         <div class="report-details">
-          <div class="report-tags">
-            <span class="badge report-status"></span>
-            <span class="badge report-category"></span>
-          </div>
-          <span class="report-example">Dados simulados</span>
+          <span class="report-category"></span>
+          <span class="date-line"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-calendar"></use></svg> <time></time></span>
         </div>
         <div class="report-footer">
-          <time></time>
-          <button class="button button-outline collect" type="button"><span aria-hidden="true">✓</span> Marcar como recolhida</button>
+          <div class="report-origin">
+            <span class="report-example">Dados simulados</span>
+            <span class="report-new" hidden>Recém-registrada</span>
+          </div>
+          <button class="button button-outline collect" type="button"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"></use></svg> Marcar como recolhida</button>
         </div>
       </article>
     </li>
