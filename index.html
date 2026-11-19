@@ -10,20 +10,20 @@
   <script src="app.js" defer></script>
 </head>
 <body>
-  <svg class="icones-definicoes" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
-    <symbol id="i-local" viewBox="0 0 24 24"><path d="M19 10c0 5-7 11-7 11S5 15 5 10a7 7 0 1 1 14 0Z"/><circle cx="12" cy="10" r="2.5"/></symbol>
-    <symbol id="i-mais" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
-    <symbol id="i-seta" viewBox="0 0 24 24"><path d="M4 12h15m-6-6 6 6-6 6"/></symbol>
-    <symbol id="i-busca" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></symbol>
-    <symbol id="i-filtro" viewBox="0 0 24 24"><path d="M3 7h6m4 0h8M3 17h10m4 0h4"/><circle cx="11" cy="7" r="2"/><circle cx="15" cy="17" r="2"/></symbol>
-    <symbol id="i-confirmar" viewBox="0 0 24 24"><path d="m4 12 5 5L20 6"/></symbol>
-    <symbol id="i-calendario" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4m10-4v4M3 10h18"/></symbol>
+  <svg class="icon-defs" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M19 10c0 5-7 11-7 11S5 15 5 10a7 7 0 1 1 14 0Z"/><circle cx="12" cy="10" r="2.5"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15m-6-6 6 6-6 6"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></symbol>
+    <symbol id="i-filter" viewBox="0 0 24 24"><path d="M3 7h6m4 0h8M3 17h10m4 0h4"/><circle cx="11" cy="7" r="2"/><circle cx="15" cy="17" r="2"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m4 12 5 5L20 6"/></symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4m10-4v4M3 10h18"/></symbol>
   </svg>
-  <a class="link-pular" href="#conteudo">Pular para o conteúdo</a>
-  <header class="cabecalho-site">
-    <div class="estrutura cabecalho-interno">
-      <a class="marca" href="#inicio" aria-label="Maré Limpa, início">
-        <span class="marca-icone" aria-hidden="true">
+  <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+  <header class="site-header">
+    <div class="shell header-inner">
+      <a class="brand" href="#inicio" aria-label="Maré Limpa, início">
+        <span class="brand-icon" aria-hidden="true">
           <svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M2 9c2.5 0 2.5-2.5 5-2.5S9.5 9 12 9s2.5-2.5 5-2.5S19.5 9 22 9M2 15c2.5 0 2.5-2.5 5-2.5s2.5 2.5 5 2.5 2.5-2.5 5-2.5 2.5 2.5 5 2.5M2 20c2.5 0 2.5-2.5 5-2.5s2.5 2.5 5 2.5 2.5-2.5 5-2.5 2.5 2.5 5 2.5"/></svg>
         </span>
         Maré Limpa
@@ -36,39 +36,39 @@
     </div>
   </header>
 
-  <main id="conteudo" class="estrutura" tabindex="-1">
-    <p id="retorno" class="retorno" role="status" aria-atomic="true" tabindex="-1"></p>
-    <p id="erro-armazenamento" class="erro-armazenamento-aviso" role="alert"></p>
+  <main id="conteudo" class="shell" tabindex="-1">
+    <p id="feedback" class="feedback" role="status" aria-atomic="true" tabindex="-1"></p>
+    <p id="erro-armazenamento" class="storage-error" role="alert"></p>
 
-    <section id="inicio" class="tela" aria-labelledby="titulo-inicio">
-      <div class="destaque">
-        <div class="destaque-conteudo">
-          <p class="sobretitulo destaque-local"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-local"></use></svg> João Pessoa, PB</p>
+    <section id="inicio" class="view" aria-labelledby="titulo-inicio">
+      <div class="hero">
+        <div class="hero-content">
+          <p class="eyebrow hero-location"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-pin"></use></svg> João Pessoa, PB</p>
           <h1 id="titulo-inicio" tabindex="-1">Maré <em>Limpa</em></h1>
-          <p class="destaque-texto">Registre resíduos nas praias de Tambaú e Cabo Branco e consulte os trechos que precisam de atenção no próximo mutirão.</p>
-          <div class="acoes destaque-acoes">
-            <a class="botao botao-principal" href="#registro"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-mais"></use></svg> Registrar ocorrência</a>
-            <a class="botao botao-texto" href="#ocorrencias">Ver ocorrências <svg class="icone" aria-hidden="true" focusable="false"><use href="#i-seta"></use></svg></a>
+          <p class="hero-lead">Registre resíduos nas praias de Tambaú e Cabo Branco e consulte os trechos que precisam de atenção no próximo mutirão.</p>
+          <div class="actions hero-actions">
+            <a class="button button-primary" href="#registro"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-plus"></use></svg> Registrar ocorrência</a>
+            <a class="button button-text" href="#ocorrencias">Ver ocorrências <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></a>
           </div>
         </div>
-        <figure class="destaque-imagem">
+        <figure class="hero-picture">
           <img src="litoral.jpg" alt="" width="1536" height="1024" fetchpriority="high">
           <figcaption>Imagem ilustrativa</figcaption>
         </figure>
       </div>
 
-      <section class="sobre" aria-labelledby="titulo-sobre">
-        <div class="sobre-titulo">
-          <p class="sobretitulo">Sobre o projeto</p>
+      <section class="about" aria-labelledby="titulo-sobre">
+        <div class="about-title">
+          <p class="eyebrow">Sobre o projeto</p>
           <h2 id="titulo-sobre">Vida na Água</h2>
-          <p class="sobre-meta">ODS 14 · Meta 14.1</p>
+          <p class="about-meta">ODS 14 · Meta 14.1</p>
         </div>
-        <div class="sobre-texto">
+        <div class="about-copy">
           <p>A meta 14.1 trata da prevenção e redução da poluição marinha. Ao registrar onde o lixo se acumula na orla, a comunidade ajuda a escolher quais trechos precisam de atenção.</p>
-          <a class="link-texto" href="https://brasil.un.org/pt-br/sdgs/14">Conheça o ODS 14 na ONU Brasil <span aria-hidden="true">↗</span></a>
+          <a class="text-link" href="https://brasil.un.org/pt-br/sdgs/14">Conheça o ODS 14 na ONU Brasil <span aria-hidden="true">↗</span></a>
         </div>
-        <section class="equipe" aria-labelledby="titulo-equipe">
-          <h3 id="titulo-equipe" class="sobretitulo">Equipe</h3>
+        <section class="team" aria-labelledby="titulo-equipe">
+          <h3 id="titulo-equipe" class="eyebrow">Equipe</h3>
           <ul>
             <li>Fábio Henrique</li>
             <li>Marllon Lorran</li>
@@ -78,77 +78,77 @@
       </section>
     </section>
 
-    <section id="registro" class="tela tela-interna tela-registro" aria-labelledby="titulo-registro" hidden>
-      <div class="cabecalho-pagina">
+    <section id="registro" class="view inner-view registration-view" aria-labelledby="titulo-registro" hidden>
+      <div class="page-heading">
         <h1 id="titulo-registro" tabindex="-1">Registrar ocorrência</h1>
         <p>Informe onde encontrou o resíduo e de que tipo ele é.</p>
       </div>
-      <form id="form-registro" class="painel registro" novalidate>
-        <p class="nota-formulario">Os campos com * são obrigatórios.</p>
-        <div class="grade-formulario">
-          <div class="campo">
+      <form id="form-registro" class="panel registration" novalidate>
+        <p class="form-note">Os campos com * são obrigatórios.</p>
+        <div class="form-grid">
+          <div class="field">
             <label for="praia">Praia <span aria-hidden="true">*</span></label>
             <select id="praia" name="praia" required>
               <option value="">Selecione a praia</option>
               <option>Tambaú</option><option>Cabo Branco</option>
             </select>
-            <p class="erro-campo" id="erro-praia" hidden></p>
+            <p class="field-error" id="erro-praia" hidden></p>
           </div>
-          <div class="campo">
+          <div class="field">
             <label for="categoria">Categoria <span aria-hidden="true">*</span></label>
             <select id="categoria" name="categoria" required>
               <option value="">Selecione a categoria</option>
               <option>Plástico</option><option>Vidro</option><option>Metal</option><option>Papel</option><option>Outros</option>
             </select>
-            <p class="erro-campo" id="erro-categoria" hidden></p>
+            <p class="field-error" id="erro-categoria" hidden></p>
           </div>
-          <div class="campo inteiro">
+          <div class="field full">
             <label for="trecho">Trecho ou ponto de referência <span aria-hidden="true">*</span></label>
             <input id="trecho" name="trecho" aria-describedby="ajuda-trecho" type="text" required maxlength="100" placeholder="Informe um ponto de referência">
-            <p id="ajuda-trecho" class="dica">Ex.: Acesso à areia perto da ciclovia. Até 100 caracteres.</p>
-            <p class="erro-campo" id="erro-trecho" hidden></p>
+            <p id="ajuda-trecho" class="hint">Ex.: Acesso à areia perto da ciclovia. Até 100 caracteres.</p>
+            <p class="field-error" id="erro-trecho" hidden></p>
           </div>
-          <div class="campo inteiro">
-            <label for="descricao">Descrição <span class="opcional">(opcional)</span></label>
+          <div class="field full">
+            <label for="descricao">Descrição <span class="optional">(opcional)</span></label>
             <textarea id="descricao" name="descricao" rows="4" placeholder="Ex.: garrafas e tampinhas perto da calçada"></textarea>
           </div>
         </div>
-        <div class="rodape-formulario">
+        <div class="form-footer">
           <p>A data é preenchida ao salvar. O status inicial é <strong>Registrada</strong>.</p>
-          <button class="botao botao-principal" type="submit">Salvar ocorrência <svg class="icone" aria-hidden="true" focusable="false"><use href="#i-seta"></use></svg></button>
+          <button class="button button-primary" type="submit">Salvar ocorrência <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></button>
         </div>
       </form>
     </section>
 
-    <section id="ocorrencias" class="tela tela-interna" aria-labelledby="titulo-lista" hidden>
-      <div class="cabecalho-pagina cabecalho-lista">
+    <section id="ocorrencias" class="view inner-view" aria-labelledby="titulo-lista" hidden>
+      <div class="page-heading list-heading">
         <div>
           <h1 id="titulo-lista" tabindex="-1">Ocorrências</h1>
           <p>Consulte os relatos e encontre trechos que precisam de atenção.</p>
         </div>
-        <a class="botao botao-principal" href="#registro"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-mais"></use></svg> Registrar ocorrência</a>
+        <a class="button button-primary" href="#registro"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-plus"></use></svg> Registrar ocorrência</a>
       </div>
-      <form id="filtros" class="filtros" aria-label="Filtrar ocorrências">
-        <div class="campo busca-filtro">
+      <form id="filtros" class="filters" aria-label="Filtrar ocorrências">
+        <div class="field filter-search">
           <label for="filtro-trecho">Buscar por trecho</label>
-          <div class="controle-busca"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-busca"></use></svg><input id="filtro-trecho" name="trecho" type="search" placeholder="Ponto de referência"></div>
+          <div class="search-control"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-search"></use></svg><input id="filtro-trecho" name="trecho" type="search" placeholder="Ponto de referência"></div>
         </div>
-        <button id="alternar-filtros" type="button" class="botao botao-contorno" aria-controls="opcoes-filtros" aria-expanded="true" hidden><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-filtro"></use></svg> <span id="rotulo-filtros">Filtros</span></button>
-        <div id="opcoes-filtros" class="opcoes-filtro">
-          <div class="campo">
+        <button id="alternar-filtros" type="button" class="button button-outline" aria-controls="opcoes-filtros" aria-expanded="true" hidden><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-filter"></use></svg> <span id="rotulo-filtros">Filtros</span></button>
+        <div id="opcoes-filtros" class="filter-options">
+          <div class="field">
             <label for="filtro-praia">Praia</label>
             <select id="filtro-praia" name="praia">
               <option value="">Todas as praias</option><option>Tambaú</option><option>Cabo Branco</option>
             </select>
           </div>
-          <div class="campo">
+          <div class="field">
             <label for="filtro-categoria">Categoria</label>
             <select id="filtro-categoria" name="categoria">
               <option value="">Todas</option>
               <option>Plástico</option><option>Vidro</option><option>Metal</option><option>Papel</option><option>Outros</option>
             </select>
           </div>
-          <div class="campo">
+          <div class="field">
             <label for="filtro-status">Status</label>
             <select id="filtro-status" name="status">
               <option value="">Todos</option><option>Registrada</option><option>Recolhida</option>
@@ -156,44 +156,44 @@
           </div>
         </div>
       </form>
-      <div class="barra-resultados">
-        <p id="contagem" class="contador" role="status" aria-atomic="true"></p>
-        <button class="limpar-filtros" type="button" id="limpar-filtros">Limpar filtros</button>
+      <div class="results-bar">
+        <p id="contagem" class="count" role="status" aria-atomic="true"></p>
+        <button class="clear-filters" type="button" id="limpar-filtros">Limpar filtros</button>
       </div>
-      <ul id="relatos" class="relatos" aria-label="Lista de ocorrências"></ul>
-      <div id="lista-vazia" class="painel vazio" hidden>
+      <ul id="relatos" class="reports" aria-label="Lista de ocorrências"></ul>
+      <div id="lista-vazia" class="panel empty" hidden>
         <h2 id="titulo-vazio"></h2>
         <p id="mensagem-vazio"></p>
       </div>
     </section>
   </main>
 
-  <footer class="rodape-site">
-    <div class="estrutura rodape-interno">
-      <span class="rodape-marca">Maré Limpa</span>
+  <footer class="site-footer">
+    <div class="shell footer-inner">
+      <span class="footer-brand">Maré Limpa</span>
       <p>Protótipo acadêmico · Os dados ficam neste navegador.</p>
     </div>
   </footer>
 
   <template id="modelo-relato">
-    <li class="relato">
+    <li class="report">
       <article>
-        <div class="relato-topo">
-          <p class="linha-praia"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-local"></use></svg> <span class="relato-praia"></span></p>
-          <span class="selo relato-status"></span>
+        <div class="report-top">
+          <p class="beach-line"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-pin"></use></svg> <span class="report-beach"></span></p>
+          <span class="badge report-status"></span>
         </div>
-        <h2 class="relato-trecho" tabindex="-1"></h2>
-        <p class="relato-descricao"></p>
-        <div class="relato-detalhes">
-          <span class="relato-categoria"></span>
-          <span class="linha-data"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-calendario"></use></svg> <time></time></span>
+        <h2 class="report-place" tabindex="-1"></h2>
+        <p class="report-description"></p>
+        <div class="report-details">
+          <span class="report-category"></span>
+          <span class="date-line"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-calendar"></use></svg> <time></time></span>
         </div>
-        <div class="relato-rodape">
-          <div class="relato-origem">
-            <span class="relato-exemplo">Dados simulados</span>
-            <span class="relato-novo" hidden>Recém-registrada</span>
+        <div class="report-footer">
+          <div class="report-origin">
+            <span class="report-example">Dados simulados</span>
+            <span class="report-new" hidden>Recém-registrada</span>
           </div>
-          <button class="botao botao-contorno recolher" type="button"><svg class="icone" aria-hidden="true" focusable="false"><use href="#i-confirmar"></use></svg> Marcar como recolhida</button>
+          <button class="button button-outline collect" type="button"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"></use></svg> Marcar como recolhida</button>
         </div>
       </article>
     </li>

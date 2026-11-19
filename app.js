@@ -1,307 +1,307 @@
 "use strict";
 
-const chaveArmazenamento = "mare-limpa.ocorrencias.v1";
-const formularioRegistro = document.querySelector("#form-registro");
-const filtros = document.querySelector("#filtros");
-const botaoFiltros = document.querySelector("#alternar-filtros");
-const opcoesFiltros = document.querySelector("#opcoes-filtros");
-const rotuloFiltros = document.querySelector("#rotulo-filtros");
-const telaEstreita = window.matchMedia("(max-width: 760px)");
-const listaRelatos = document.querySelector("#relatos");
-const modeloRelato = document.querySelector("#modelo-relato");
-const listaVazia = document.querySelector("#lista-vazia");
-const retorno = document.querySelector("#retorno");
-const erroArmazenamento = document.querySelector("#erro-armazenamento");
-const telas = [...document.querySelectorAll(".tela")];
-const linksNavegacao = [...document.querySelectorAll("nav a")];
-const formatoData = new Intl.DateTimeFormat("pt-BR", {
+const storageKey = "mare-limpa.ocorrencias.v1";
+const registration = document.querySelector("#form-registro");
+const filters = document.querySelector("#filtros");
+const filterToggle = document.querySelector("#alternar-filtros");
+const filterOptions = document.querySelector("#opcoes-filtros");
+const filterLabel = document.querySelector("#rotulo-filtros");
+const narrowScreen = window.matchMedia("(max-width: 760px)");
+const reports = document.querySelector("#relatos");
+const template = document.querySelector("#modelo-relato");
+const empty = document.querySelector("#lista-vazia");
+const feedback = document.querySelector("#feedback");
+const storageError = document.querySelector("#erro-armazenamento");
+const views = [...document.querySelectorAll(".view")];
+const navLinks = [...document.querySelectorAll("nav a")];
+const dateFormat = new Intl.DateTimeFormat("pt-BR", {
   dateStyle: "short",
   timeStyle: "short",
   timeZone: "America/Sao_Paulo",
 });
-const mensagensCampos = {
+const fieldMessages = {
   praia: "Selecione uma praia.",
   categoria: "Selecione uma categoria.",
   trecho: "Informe o trecho ou ponto de referência.",
 };
 
-let telaAtiva;
-let idNovoRelato;
+let activeView;
+let newReportId;
 
-function criarExemplos() {
-  const exemplos = [
+function exampleReports() {
+  const examples = [
     ["Tambaú", "Em frente ao Busto de Tamandaré", "Plástico", "Sacolas e tampinhas junto à calçada.", "Registrada"],
     ["Cabo Branco", "Acesso à areia próximo à ciclovia", "Vidro", "Cacos na faixa de areia perto do acesso.", "Registrada"],
     ["Cabo Branco", "Trecho próximo à Praça de Iemanjá", "Metal", "Latas de bebida perto da calçada.", "Registrada"],
     ["Tambaú", "Faixa de areia perto da Feirinha de Tambaú", "Papel", "Embalagens de papel junto ao calçadão.", "Recolhida"],
   ];
-  const agora = Date.now();
-  return exemplos.map(([praia, trecho, categoria, descricao, status], indice) => ({
-    id: `exemplo-${indice + 1}`,
+  const now = Date.now();
+  return examples.map(([praia, trecho, categoria, descricao, status], index) => ({
+    id: `exemplo-${index + 1}`,
     praia, trecho, categoria, descricao, status,
-    data: new Date(agora - (indice + 1) * 86_400_000).toISOString(),
+    data: new Date(now - (index + 1) * 86_400_000).toISOString(),
     simulado: true,
   }));
 }
 
-const exemplos = criarExemplos();
+const examples = exampleReports();
 
-function lerRelatos() {
-  const salvo = localStorage.getItem(chaveArmazenamento);
-  if (salvo === null) {
-    salvarRelatos(exemplos);
-    return exemplos;
+function readReports() {
+  const stored = localStorage.getItem(storageKey);
+  if (stored === null) {
+    writeReports(examples);
+    return examples;
   }
 
-  const itens = JSON.parse(salvo);
-  if (!Array.isArray(itens)) throw new Error("Formato inválido.");
-  return itens;
+  const items = JSON.parse(stored);
+  if (!Array.isArray(items)) throw new Error("Formato inválido.");
+  return items;
 }
 
-function salvarRelatos(itens) {
-  localStorage.setItem(chaveArmazenamento, JSON.stringify(itens));
+function writeReports(items) {
+  localStorage.setItem(storageKey, JSON.stringify(items));
 }
 
-function mostrarErroArmazenamento(mensagem) {
-  erroArmazenamento.textContent = mensagem;
+function showStorageError(message) {
+  storageError.textContent = message;
 }
 
-function navegar() {
-  const solicitada = location.hash.slice(1);
-  const proxima = telas.find((tela) => tela.id === solicitada) ?? telas[0];
+function route() {
+  const requested = location.hash.slice(1);
+  const next = views.find((view) => view.id === requested) ?? views[0];
 
-  if (proxima !== telaAtiva) {
-    retorno.textContent = "";
-    erroArmazenamento.textContent = "";
-    if (proxima.id !== "ocorrencias") idNovoRelato = null;
+  if (next !== activeView) {
+    feedback.textContent = "";
+    storageError.textContent = "";
+    if (next.id !== "ocorrencias") newReportId = null;
   }
 
-  telas.forEach((tela) => { tela.hidden = tela !== proxima; });
-  linksNavegacao.forEach((link) => {
-    if (link.hash === `#${proxima.id}`) link.setAttribute("aria-current", "page");
+  views.forEach((view) => { view.hidden = view !== next; });
+  navLinks.forEach((link) => {
+    if (link.hash === `#${next.id}`) link.setAttribute("aria-current", "page");
     else link.removeAttribute("aria-current");
   });
 
-  if (proxima.id === "ocorrencias") mostrarRelatos();
-  if (telaAtiva && proxima !== telaAtiva) {
-    proxima.querySelector("h1").focus({ preventScroll: true });
+  if (next.id === "ocorrencias") renderReports();
+  if (activeView && next !== activeView) {
+    next.querySelector("h1").focus({ preventScroll: true });
     window.scrollTo(0, 0);
   }
-  telaAtiva = proxima;
+  activeView = next;
 }
 
-function validarCampo(campo) {
-  const erro = document.querySelector(`#erro-${campo.name}`);
-  const mensagem = campo.value.trim() ? "" : mensagensCampos[campo.name];
-  const descricao = campo.name === "trecho" ? ["ajuda-trecho"] : [];
+function validateField(field) {
+  const error = document.querySelector(`#erro-${field.name}`);
+  const message = field.value.trim() ? "" : fieldMessages[field.name];
+  const description = field.name === "trecho" ? ["ajuda-trecho"] : [];
 
-  erro.textContent = mensagem;
-  erro.hidden = !mensagem;
-  if (mensagem) {
-    campo.setAttribute("aria-invalid", "true");
-    descricao.unshift(erro.id);
+  error.textContent = message;
+  error.hidden = !message;
+  if (message) {
+    field.setAttribute("aria-invalid", "true");
+    description.unshift(error.id);
   } else {
-    campo.removeAttribute("aria-invalid");
+    field.removeAttribute("aria-invalid");
   }
-  if (descricao.length) campo.setAttribute("aria-describedby", descricao.join(" "));
-  else campo.removeAttribute("aria-describedby");
-  return !mensagem;
+  if (description.length) field.setAttribute("aria-describedby", description.join(" "));
+  else field.removeAttribute("aria-describedby");
+  return !message;
 }
 
-formularioRegistro.addEventListener("input", ({ target }) => {
-  if (target.hasAttribute("aria-invalid")) validarCampo(target);
+registration.addEventListener("input", ({ target }) => {
+  if (target.hasAttribute("aria-invalid")) validateField(target);
 });
 
-formularioRegistro.addEventListener("submit", (evento) => {
-  evento.preventDefault();
-  erroArmazenamento.textContent = "";
-  const camposObrigatorios = [...formularioRegistro.querySelectorAll("[required]")];
-  const camposInvalidos = camposObrigatorios.filter((campo) => !validarCampo(campo));
-  if (camposInvalidos.length) {
-    camposInvalidos[0].focus();
+registration.addEventListener("submit", (event) => {
+  event.preventDefault();
+  storageError.textContent = "";
+  const requiredFields = [...registration.querySelectorAll("[required]")];
+  const invalidFields = requiredFields.filter((field) => !validateField(field));
+  if (invalidFields.length) {
+    invalidFields[0].focus();
     return;
   }
 
-  const valores = new FormData(formularioRegistro);
-  const agora = Date.now();
-  const relato = {
-    id: globalThis.crypto?.randomUUID?.() ?? `${agora}-${Math.random().toString(36).slice(2)}`,
-    praia: valores.get("praia"),
-    trecho: valores.get("trecho").trim(),
-    categoria: valores.get("categoria"),
-    descricao: valores.get("descricao").trim(),
-    data: new Date(agora).toISOString(),
+  const values = new FormData(registration);
+  const now = Date.now();
+  const report = {
+    id: globalThis.crypto?.randomUUID?.() ?? `${now}-${Math.random().toString(36).slice(2)}`,
+    praia: values.get("praia"),
+    trecho: values.get("trecho").trim(),
+    categoria: values.get("categoria"),
+    descricao: values.get("descricao").trim(),
+    data: new Date(now).toISOString(),
     status: "Registrada",
     simulado: false,
   };
 
   try {
-    salvarRelatos([relato, ...lerRelatos()]);
+    writeReports([report, ...readReports()]);
   } catch {
-    mostrarErroArmazenamento("Não foi possível salvar. Verifique se o navegador permite armazenamento local e tente novamente.");
+    showStorageError("Não foi possível salvar. Verifique se o navegador permite armazenamento local e tente novamente.");
     return;
   }
 
-  formularioRegistro.reset();
-  filtros.reset();
-  idNovoRelato = relato.id;
-  abrirPainelFiltros(!telaEstreita.matches);
+  registration.reset();
+  filters.reset();
+  newReportId = report.id;
+  setFilterPanel(!narrowScreen.matches);
   history.pushState(null, "", "#ocorrencias");
-  navegar();
-  retorno.textContent = `Ocorrência registrada com sucesso. ${relato.trecho} · ${relato.praia}.`;
+  route();
+  feedback.textContent = `Ocorrência registrada com sucesso. ${report.trecho} · ${report.praia}.`;
 });
 
-function normalizar(valor) {
-  return valor.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLocaleLowerCase("pt-BR");
+function normalize(value) {
+  return value.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLocaleLowerCase("pt-BR");
 }
 
-function criarCartao(item) {
-  const cartao = modeloRelato.content.firstElementChild.cloneNode(true);
-  const recolhido = item.status === "Recolhida";
-  const ehNovo = item.id === idNovoRelato;
-  cartao.dataset.id = item.id;
-  cartao.classList.toggle("novo", ehNovo);
-  cartao.querySelector(".relato-novo").hidden = !ehNovo;
-  cartao.querySelector(".relato-praia").textContent = item.praia;
-  cartao.querySelector(".relato-trecho").textContent = item.trecho;
+function createCard(item) {
+  const card = template.content.firstElementChild.cloneNode(true);
+  const collected = item.status === "Recolhida";
+  const isNew = item.id === newReportId;
+  card.dataset.id = item.id;
+  card.classList.toggle("is-new", isNew);
+  card.querySelector(".report-new").hidden = !isNew;
+  card.querySelector(".report-beach").textContent = item.praia;
+  card.querySelector(".report-place").textContent = item.trecho;
 
-  const descricao = cartao.querySelector(".relato-descricao");
-  descricao.textContent = item.descricao;
-  descricao.hidden = !item.descricao;
+  const description = card.querySelector(".report-description");
+  description.textContent = item.descricao;
+  description.hidden = !item.descricao;
 
-  const status = cartao.querySelector(".relato-status");
+  const status = card.querySelector(".report-status");
   status.textContent = item.status;
-  status.classList.toggle("recolhida", recolhido);
-  cartao.querySelector(".relato-categoria").textContent = item.categoria;
-  cartao.querySelector(".relato-exemplo").hidden = !item.simulado;
+  status.classList.toggle("collected", collected);
+  card.querySelector(".report-category").textContent = item.categoria;
+  card.querySelector(".report-example").hidden = !item.simulado;
 
-  const horario = cartao.querySelector("time");
-  horario.dateTime = item.data;
-  horario.textContent = formatoData.format(new Date(item.data));
-  const botao = cartao.querySelector(".recolher");
-  botao.hidden = recolhido;
-  botao.setAttribute("aria-label", `Marcar como recolhida: ${item.trecho}, ${item.praia}`);
-  return cartao;
+  const time = card.querySelector("time");
+  time.dateTime = item.data;
+  time.textContent = dateFormat.format(new Date(item.data));
+  const button = card.querySelector(".collect");
+  button.hidden = collected;
+  button.setAttribute("aria-label", `Marcar como recolhida: ${item.trecho}, ${item.praia}`);
+  return card;
 }
 
-function mostrarRelatos() {
-  let itens;
+function renderReports() {
+  let items;
   try {
-    itens = lerRelatos();
+    items = readReports();
   } catch {
-    itens = exemplos;
-    mostrarErroArmazenamento("Os dados salvos estão indisponíveis. A lista exibe apenas os dados simulados.");
+    items = examples;
+    showStorageError("Os dados salvos estão indisponíveis. A lista exibe apenas os dados simulados.");
   }
-  const valores = new FormData(filtros);
-  const filtroPraia = valores.get("praia");
-  const filtroCategoria = valores.get("categoria");
-  const status = valores.get("status");
-  const filtroTrecho = normalizar(valores.get("trecho").trim());
-  const filtrosAtivos = [filtroPraia, filtroCategoria, status].filter(Boolean).length;
-  rotuloFiltros.textContent = filtrosAtivos ? `Filtros (${filtrosAtivos})` : "Filtros";
-  const resultados = itens.filter((item) =>
-    (!filtroPraia || item.praia === filtroPraia) &&
-    (!filtroCategoria || item.categoria === filtroCategoria) &&
+  const values = new FormData(filters);
+  const beach = values.get("praia");
+  const category = values.get("categoria");
+  const status = values.get("status");
+  const place = normalize(values.get("trecho").trim());
+  const activeFilters = [beach, category, status].filter(Boolean).length;
+  filterLabel.textContent = activeFilters ? `Filtros (${activeFilters})` : "Filtros";
+  const matches = items.filter((item) =>
+    (!beach || item.praia === beach) &&
+    (!category || item.categoria === category) &&
     (!status || item.status === status) &&
-    (!filtroTrecho || normalizar(item.trecho).includes(filtroTrecho))
-  ).sort((primeiro, segundo) => segundo.data.localeCompare(primeiro.data));
+    (!place || normalize(item.trecho).includes(place))
+  ).sort((first, second) => second.data.localeCompare(first.data));
 
-  listaRelatos.replaceChildren(...resultados.map(criarCartao));
-  const quantidade = resultados.length;
-  const contador = document.querySelector("#contagem");
-  const textoContagem = quantidade === 1 ? "1 ocorrência" : `${quantidade} ocorrências`;
-  if (contador.textContent !== textoContagem) contador.textContent = textoContagem;
-  listaVazia.hidden = quantidade > 0;
-  if (quantidade === 0) {
-    document.querySelector("#titulo-vazio").textContent = itens.length
+  reports.replaceChildren(...matches.map(createCard));
+  const count = matches.length;
+  const counter = document.querySelector("#contagem");
+  const countText = count === 1 ? "1 ocorrência" : `${count} ocorrências`;
+  if (counter.textContent !== countText) counter.textContent = countText;
+  empty.hidden = count > 0;
+  if (count === 0) {
+    document.querySelector("#titulo-vazio").textContent = items.length
       ? "Nenhuma ocorrência corresponde aos filtros."
       : "Nenhuma ocorrência registrada.";
-    document.querySelector("#mensagem-vazio").textContent = itens.length
+    document.querySelector("#mensagem-vazio").textContent = items.length
       ? "Altere ou limpe os filtros para consultar outros relatos."
       : "Use o botão Registrar ocorrência para adicionar o primeiro relato.";
   }
 }
 
-function aplicarFiltros() {
-  retorno.textContent = "";
-  mostrarRelatos();
+function applyFilters() {
+  feedback.textContent = "";
+  renderReports();
 }
 
-function abrirPainelFiltros(aberto) {
-  opcoesFiltros.hidden = !aberto;
-  botaoFiltros.setAttribute("aria-expanded", String(aberto));
+function setFilterPanel(expanded) {
+  filterOptions.hidden = !expanded;
+  filterToggle.setAttribute("aria-expanded", String(expanded));
 }
 
-function ajustarFiltros() {
-  const estavaNoBotao = document.activeElement === botaoFiltros;
-  abrirPainelFiltros(!telaEstreita.matches || opcoesFiltros.contains(document.activeElement));
-  botaoFiltros.hidden = !telaEstreita.matches;
-  if (estavaNoBotao && botaoFiltros.hidden) opcoesFiltros.querySelector("select").focus();
+function syncFilterLayout() {
+  const wasOnToggle = document.activeElement === filterToggle;
+  setFilterPanel(!narrowScreen.matches || filterOptions.contains(document.activeElement));
+  filterToggle.hidden = !narrowScreen.matches;
+  if (wasOnToggle && filterToggle.hidden) filterOptions.querySelector("select").focus();
 }
 
-telaEstreita.addEventListener("change", ajustarFiltros);
-ajustarFiltros();
-botaoFiltros.addEventListener("click", () => abrirPainelFiltros(opcoesFiltros.hidden));
+narrowScreen.addEventListener("change", syncFilterLayout);
+syncFilterLayout();
+filterToggle.addEventListener("click", () => setFilterPanel(filterOptions.hidden));
 
-filtros.addEventListener("input", aplicarFiltros);
-filtros.addEventListener("submit", (evento) => evento.preventDefault());
+filters.addEventListener("input", applyFilters);
+filters.addEventListener("submit", (event) => event.preventDefault());
 document.querySelector("#limpar-filtros").addEventListener("click", () => {
-  filtros.reset();
-  aplicarFiltros();
+  filters.reset();
+  applyFilters();
 });
 
-listaRelatos.addEventListener("click", (evento) => {
-  const botao = evento.target.closest(".recolher");
-  if (!botao) return;
-  const id = botao.closest(".relato").dataset.id;
-  retorno.textContent = "";
-  erroArmazenamento.textContent = "";
-  let relato;
+reports.addEventListener("click", (event) => {
+  const button = event.target.closest(".collect");
+  if (!button) return;
+  const id = button.closest(".report").dataset.id;
+  feedback.textContent = "";
+  storageError.textContent = "";
+  let report;
   try {
-    const atuais = lerRelatos();
-    relato = atuais.find((item) => item.id === id);
-    if (relato) {
-      relato.status = "Recolhida";
-      salvarRelatos(atuais);
+    const current = readReports();
+    report = current.find((item) => item.id === id);
+    if (report) {
+      report.status = "Recolhida";
+      writeReports(current);
     }
   } catch {
-    mostrarErroArmazenamento("Não foi possível atualizar o status. Verifique o armazenamento local e tente novamente.");
+    showStorageError("Não foi possível atualizar o status. Verifique o armazenamento local e tente novamente.");
     return;
   }
 
-  if (idNovoRelato === id) idNovoRelato = null;
-  mostrarRelatos();
-  retorno.textContent = relato
-    ? `Ocorrência marcada como recolhida. ${relato.trecho} · ${relato.praia}.`
+  if (newReportId === id) newReportId = null;
+  renderReports();
+  feedback.textContent = report
+    ? `Ocorrência marcada como recolhida. ${report.trecho} · ${report.praia}.`
     : "Esta ocorrência já não consta na lista.";
-  const atualizado = [...listaRelatos.children].find((cartao) => cartao.dataset.id === id);
-  if (atualizado) {
-    const confirmacao = document.createElement("span");
-    confirmacao.className = "confirmacao-recolhimento";
-    confirmacao.textContent = "Recolhimento confirmado";
-    confirmacao.tabIndex = -1;
-    atualizado.querySelector(".recolher").after(confirmacao);
-    confirmacao.focus({ preventScroll: true });
-    confirmacao.scrollIntoView({ block: "nearest" });
+  const updated = [...reports.children].find((card) => card.dataset.id === id);
+  if (updated) {
+    const confirmation = document.createElement("span");
+    confirmation.className = "collect-confirmation";
+    confirmation.textContent = "Recolhimento confirmado";
+    confirmation.tabIndex = -1;
+    updated.querySelector(".collect").after(confirmation);
+    confirmation.focus({ preventScroll: true });
+    confirmation.scrollIntoView({ block: "nearest" });
   } else {
-    retorno.focus({ preventScroll: true });
-    retorno.scrollIntoView({ block: "nearest" });
+    feedback.focus({ preventScroll: true });
+    feedback.scrollIntoView({ block: "nearest" });
   }
 });
 
-document.querySelector(".link-pular").addEventListener("click", (evento) => {
-  evento.preventDefault();
+document.querySelector(".skip-link").addEventListener("click", (event) => {
+  event.preventDefault();
   document.querySelector("#conteudo").focus();
 });
 
-window.addEventListener("hashchange", navegar);
+window.addEventListener("hashchange", route);
 window.addEventListener("storage", ({ key }) => {
-  if ((key === chaveArmazenamento || key === null) && telaAtiva.id === "ocorrencias") mostrarRelatos();
+  if ((key === storageKey || key === null) && activeView.id === "ocorrencias") renderReports();
 });
 
 try {
-  lerRelatos();
+  readReports();
 } catch {
   // A tela de ocorrências explica a indisponibilidade e exibe os exemplos.
 }
-navegar();
+route();
