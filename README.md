@@ -2,7 +2,7 @@
 
 **Registro e acompanhamento de resíduos nas praias de Tambaú e Cabo Branco, em João Pessoa (PB).**
 
-[Abrir o aplicativo](https://eumarllonlran.github.io/mare-limpa/) · [Roteiro de apresentação](#roteiro-de-apresentação) · [Execução local](#execução-local)
+[Abrir o aplicativo](https://eumarllonlran0.github.io/mare-limpa/) · [Roteiro de apresentação](#roteiro-de-apresentação) · [Execução local](#execução-local)
 
 ![Tela inicial do Maré Limpa com a foto aérea do litoral e os botões de registro e consulta](capturas/inicio-desktop.png)
 
@@ -44,7 +44,7 @@ O aplicativo usa HTML, CSS e JavaScript puro. Imagens e fontes acompanham o proj
 1. Clone o repositório e entre na pasta.
 
    ```sh
-   git clone https://github.com/eumarllonlran/mare-limpa.git
+   git clone https://github.com/eumarllonlran0/mare-limpa.git
    cd mare-limpa
    ```
 
